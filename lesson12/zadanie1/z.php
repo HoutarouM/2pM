@@ -43,31 +43,25 @@
         // klasa Uczen dziedziczy wszystkie metody publiczne i chronieone
         private $nr_Klasy;
 
-        // public function __construct($imie, $nazwiako, $klasa)
-        // {
-        //     $this->imie = $imie;
-        //     $this->nazwisko = $nazwiako;
-        //     $this->nr_Klasy = $klasa;
-        // }
-
+        public function __construct($imie, $nazwiako, $klasa)
+        {
+            parent::__construct($imie, $nazwisko);
+            $this->nr_Klasy = $klasa;
+        }
     }
 
     class Nauczyciel extends Osoba{
         private $przedmiot;
 
-        public function __construct($imie, $nazwiako, $przedmiot)
+        public function __construct($imie, $nazwisko, $przedmiot)
         {
-            $this->imie = $imie;
-            $this->nazwisko = $nazwiako;
+            parent::__construct($imie, $nazwisko);
             $this->przedmiot = $przedmiot;
         }
 
         public function __toString()
         {
-            return "Object klasy osoba<br>
-            Imie: $this->imie,<br>
-            Nazwisko: $this->nazwisko<br>
-            Przedmiot: $this->przedmiot<br>";
+            return parent:__toString(). "przedmiot". $this->przedmiot;
         }
     }
 
@@ -186,6 +180,8 @@
     // $uczen2 = new Uczen("Adrian", "Adrenski");
 
     $nauczyciel1 = new Nauczyciel("Edmund", "Niziurski", "biologia");
+
+    echo $nauczyciel1;
 
     // $klasa2p = new ZespolUczniow("2p", $nauczyciel1);
 
