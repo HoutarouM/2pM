@@ -61,7 +61,7 @@
 
         public function __toString()
         {
-            return parent:__toString(). "przedmiot". $this->przedmiot;
+            return parent::__toString(). "przedmiot<br>". $this->przedmiot."<br>";
         }
     }
 
