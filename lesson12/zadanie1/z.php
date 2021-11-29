@@ -41,12 +41,17 @@
         // kalsa Uczen to klasa potamna
         // klasa Oboba to klasa bazowa
         // klasa Uczen dziedziczy wszystkie metody publiczne i chronieone
-        private $nr_Klasy;
+        private $nr_Ucznia;
 
-        public function __construct($imie, $nazwiako, $klasa)
+        public function __construct($imie, $nazwisko, $nr)
         {
             parent::__construct($imie, $nazwisko);
-            $this->nr_Klasy = $klasa;
+            $this->nr_Ucznia = $nr;
+        }
+
+        public function __toString()
+        {
+            return 'imie: '. $this->imie."<br>nazwisko: ". $this->nazwisko. "<br> nr_Ucznia: ". $this->nr_Ucznia. "<br>";
         }
     }
 
@@ -61,7 +66,8 @@
 
         public function __toString()
         {
-            return parent::__toString(). "przedmiot<br>". $this->przedmiot."<br>";
+            return 'imie: '. $this->imie."<br>nazwisko: ". $this->nazwisko. "<br> pzredmiot: ". $this->przedmiot. "<br>";
+            // return parent::__toString(). "przedmiot<br>". $this->przedmiot."<br>";
         }
     }
 
@@ -123,7 +129,7 @@
             $this->nazwa = $nazwa;
             $this->adres = $adres;
             $this->tablicaKlass = [];
-            $this->ucuczniowie = [];
+            $this->uczniowie = [];
             $this->nauczyciele = [];
         }
 
@@ -139,61 +145,60 @@
             array_push($this->nauczyciele, $nauczyciel);
         }
 
-        public function dodajUczniaDoSzkoly($imie, $nazwisko, $nr_klasy)
+        public function dodajUczniaDoSzkoly($imie, $nazwisko)
         {
-            $uczen = new Uczen($imie, $nazwiako, $nr_klasy);
-            array_push($this->uczniowie, $uczen);
             Szkola::$liczba_uczniow++;
+
+            $uczen = new Uczen($imie, $nazwisko, Szkola::$liczba_uczniow);
+            array_push($this->uczniowie, $uczen);
+
+            // $this->dodajUczniaDoKlasy($uczen);
         }
+
+        public function dodajUczniaDoKlasy($klasa, $uczen)
+        {
+            // sprawdzamy czy uczen jest w jakiejkolwiek klasie  
+            foreach($this->tablicaKlass as $kl)
+            {
+                if($kl->isInClass($uczen))
+                {
+                    return false;
+                }
+            }
+
+            $klasa->dodajUczniaDoKlasy($uczen);
+        } 
 
         public function __get($wych)
         {
             $this->wych = $wych;
         }
-    }
 
-    // $osoba1 = new Osoba("Jas", "Nowak"); // automatycznie jest wywolwana metoda konstruktora
+        public function __toString()
+        {
+            $data = '';
+            for($i = 0; $i < count($this->uczniowie); $i++)
+            {
+                $data .= "uczen: ".$this->uczniowie[$i]."<br>";
+            }
 
-    // echo "$osoba1->imie<br>"; // dla zmiennych prywatnych jest wywolywana metoda get
-
-    // //$osoba1->zmien_imie("Jan");
-
-    // $osoba1->imie = "Jan";
-    
-    // echo "$osoba1->imie ";
-    // echo "$osoba1->nazwisko<br>"; // dziala tylko dla zmiennych publicznych
-
-    // // hermetyzacja klasa ma pole/wlasnoszczi/skladowe ktrych nie mozna modyfikowac poza klasa
-
-    // echo $osoba1->zwroc_imie();
-
-    // echo "<br>";
-
-    // $uczen1 = new Uczen("Emil", "Pistacjusz");
-
-    // echo "$uczen1->imie<br>";
-
-    // echo $uczen1;
-
-    // echo "<br>";
-
-    // $uczen2 = new Uczen("Adrian", "Adrenski");
+            return $data;
+        }
+    } 
 
     $nauczyciel1 = new Nauczyciel("Edmund", "Niziurski", "biologia");
 
-    echo $nauczyciel1;
-
-    // $klasa2p = new ZespolUczniow("2p", $nauczyciel1);
-
-    // $klasa2p->dodajUczniaDoKlasy($uczen1);
-    // $klasa2p->dodajUczniaDoKlasy($uczen2);
-    // $klasa2p->dodajUczniaDoKlasy($uczen2);
-
-    // echo $klasa2p;
-
     $szkola1 = new Szkola('zs10', 'Chopina Zabrze');
 
+    $szkola1->dodajKlase('1p', $nauczyciel1);
     $szkola1->dodajKlase('2p', $nauczyciel1);
+    $szkola1->dodajKlase('3p', $nauczyciel1);
+
+    $szkola1->dodajUczniaDoSzkoly('Emil', "Nowak");
+    $szkola1->dodajUczniaDoSzkoly('Emil', "Nowak");
+    $szkola1->dodajUczniaDoSzkoly('Emil', "Nowak");
+
+    // echo $szkola1;
 
     echo Szkola::$liczba_uczniow;
 ?>
