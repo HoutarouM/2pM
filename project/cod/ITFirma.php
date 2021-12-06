@@ -29,11 +29,23 @@
 
         public function __toString()
         {
+            $pracowniki;
+            $produkty;
+
+            for($i = 0; $i < count($this->pracowniki); $i++)
+            {
+                $pracowniki = $pracowniki.$this->pracowniki[$i]."<br>"; 
+            }
+
+            for($i = 0; $i < count($this->produkty); $i++)
+            {
+                $produkty = $produkty.$this->produkty[$i]."<br>";
+            }
+
             return "IT firma nazwa: $this->nazwa <br>
                 adres: $this->adres <br>
-                pracownicy: $this->pracownicy <br>
-                podukty: $this->produkty <br>";
-            // TODO: napisac wypisywanie pracownikow i produktow
+                pracownicy: $pracowniki <br>
+                podukty: $produkty <br>";
         }
 
         public function dodajProdukt()

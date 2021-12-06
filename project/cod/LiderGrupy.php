@@ -10,6 +10,16 @@
             $this->podzielicMiedzyPracownikow = [];
         }
 
+        public function __get($zmienna)
+        {
+            return $this->$zmienna;
+        }
+
+        public function __set($zmienna, $dane)
+        {
+            $this->$zmienna = $dane; 
+        }
+
         public function dostacTaski()
         {
 
