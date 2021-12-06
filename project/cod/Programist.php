@@ -1,10 +1,12 @@
 <?php
+    include 'Osoba.php';
 
     class Programist extends Osoba
     {
         private $oddzial;
         private $grupa;
         private $posada;
+        private $czyZajety;
         
         public function __construct($imie, $nazwisko, $adres, $email, $oddzial, $grupa, $posada)
         {
@@ -13,6 +15,8 @@
             $this->oddzial = $oddzial;
             $this->grupa = $grupa;
             $this->posada = $posada;
+
+            $this->czczyZajety = false;
         }
 
         public function __get($zmienna)
@@ -39,11 +43,9 @@
 
         }
 
-        public function wykonacTask()
+        public function podjacPraceNadZadaniem()
         {
 
         }
-
     }
-
 ?>
