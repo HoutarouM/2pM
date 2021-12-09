@@ -55,7 +55,7 @@
 
         public function __get($wych)
         {
-            $this->wych = $wych;
+            return $this->$wych;
         }
 
         public function __toString()

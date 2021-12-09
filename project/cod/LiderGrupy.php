@@ -1,43 +1,51 @@
 <?php
-    include 'Osoba.php';
+require_once('Osoba.php');
+require_once('Produkt.php');
 
-    class LiderGrupy extends Osoba
+class LiderGrupy extends Osoba
+{
+    private $podporzadkowanePracownicy;
+
+    public function __construct($imie, $nazwisko, $adres, $email, $grupa)
     {
-        private $podporzadkowanePracownicy;
+        parent::__construct($imie, $nazwisko, $adres, $email, $grupa);
 
-        public function __constructor()
-        {
-            $this->podzielicMiedzyPracownikow = [];
+        $this->podporzadkowanePracownicy = [];
+    }
+
+    public function __toString()
+    {
+        $podporzadkowanePracowniki = '';
+
+        for ($i = 0; $i < count($this->podporzadkowanePracownicy); $i++) {
+            $podporzadkowanePracowniki .= "<li>" . $this->podporzadkowanePracownicy[$i] . "</li>";
         }
 
-        public function __get($zmienna)
-        {
-            return $this->$zmienna;
-        }
+        return "Lider Grupy $this->grupa <br>
+                imie: $this->imie <br>
+                nazwisko: $this->nazwisko <br>
+                podporządkowane pracowniki: <ul>" . $podporzadkowanePracowniki . "</ul>";
+    }
 
-        public function __set($zmienna, $dane)
-        {
-            $this->$zmienna = $dane; 
-        }
+    public function dodacProgramistaDoPodparzadkownych($pracownik)
+    {
+        array_push($this->podporzadkowanePracownicy, $pracownik);
+    }
 
-        public function dostacTaski()
-        {
+    public function dostacZadania()
+    {
+    }
 
-        }
+    public function podzielicMiedzyPracownikow()
+    {
+    }
 
-        public function podzielicMiedzyPracownikow()
-        {
+    public function zmienicStanWykonaniaProjectu()
+    {
+    }
 
-        }
-
-        public function pomucPraktykanta()
-        {
-
-        }
-
-        public function zmienicStanWykonaniaZadania()
-        {
-
-        }
-    }    
-?>
+    public function zwrocPodporzadkowanychPracownikow()
+    {
+        return $this->podporzadkowanePracownicy;
+    }
+}

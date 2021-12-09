@@ -1,51 +1,54 @@
 <?php
-    include 'Osoba.php';
+require_once('Osoba.php');
 
-    class Programist extends Osoba
+class Programist extends Osoba
+{
+    private $oddzial;
+    private $posada;
+    private $czyZajety;
+    private $lider;
+
+    public function __construct($imie, $nazwisko, $adres, $email, $oddzial, $posada)
     {
-        private $oddzial;
-        private $grupa;
-        private $posada;
-        private $czyZajety;
-        
-        public function __construct($imie, $nazwisko, $adres, $email, $oddzial, $grupa, $posada)
-        {
-            parent::__construct($imie, $nazwisko, $adres, $email);
+        parent::__construct($imie, $nazwisko, $adres, $email, null);
 
-            $this->oddzial = $oddzial;
-            $this->grupa = $grupa;
-            $this->posada = $posada;
+        $this->oddzial = $oddzial;
+        $this->posada = $posada;
 
-            $this->czczyZajety = false;
-        }
+        $this->czyZajety = false;
+    }
 
-        public function __get($zmienna)
-        {
-            return $this->$zmienna;
-        }
-
-        public function __set($zmienna, $dane)
-        {
-            $this->$zmienna = $dane;
-        }
-
-        public function __toString()
-        {
-            return "Programist imie: $this->imie <br>
+    public function __toString()
+    {
+        return "Programist imie: $this->imie <br>
                     nazwisko: $this->nazwisko <br>
                     oddzial: $this->oddzial <br>
                     grupa: $this->grupa <br>
-                    posada: $this->posada";
-        }
+                    posada: $this->posada <br>
+                    lider: " . $this->lider->imie . ' ' . $this->lider->nazwisko . " <br>
+                    czy zajęty: " . ($this->czyZajety ? 'tak' : 'nie') . " <br>";
+    }
 
-        public function dostacTask()
-        {
-
-        }
-
-        public function podjacPraceNadZadaniem()
-        {
-
+    public function dostacZadanie($zadanie)
+    {
+        if ($this->czyZajety == false) {
+            $this->podjacPraceNadZadaniem($zadanie);
         }
     }
-?>
+
+    public function podjacPraceNadZadaniem($zadanie)
+    {
+        $this->czyZajety = true;
+
+        echo "Imie: $this->imie, pracuje nad: $zadanie.";
+    }
+
+    public function dostacLidera($lider)
+    {
+        $this->czyMaLidera = true;
+
+        $this->lider = $lider;
+
+        $this->grupa = $lider->grupa;
+    }
+}
