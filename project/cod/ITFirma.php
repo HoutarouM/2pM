@@ -61,6 +61,8 @@ class ITFirma
 
     public function dodajProdukt($nazwa, $wymaganaLiczbaProgramistow)
     {
+        $produkt = '';
+
         // sprawdzenie czy tablica jest pysta
         // jeśli jest dodaj pierwszy element
         if (empty($this->produkty)) {
@@ -90,6 +92,8 @@ class ITFirma
                 $this->produkty[$i]->dodajZadanie($zadanie);
             }
         }
+
+        $this->nadajLideruZadania();
     }
 
     public function dodajPracownika($imie, $nazwisko, $adres, $email, $oddzial, $posada)
@@ -98,10 +102,10 @@ class ITFirma
         array_push($this->pracowniki, $programist);
         array_push($this->programisci, $programist);
 
-        $this->nadajLidera($programist);
+        $this->nadajLideraPracowniku($programist);
     }
 
-    public function nadajLidera($pracownik)
+    public function nadajLideraPracowniku($pracownik)
     {
         for ($i = 0; $i < count($this->lidery); $i++) {
             // jeden liner nie moge miec wiecej od 4 pracownikow
@@ -112,5 +116,38 @@ class ITFirma
                 $pracownik->dostacLidera($this->lidery[$i]);
             }
         }
+    }
+
+    public function produktNadKtorymNiePodjetaPraca()
+    {
+        // zwraca project nad ktorym jeszcze nikt nie pracuje
+        for ($i = 0; $i < count($this->produkty); $i++) {
+            if ($this->produkty[$i]->procesWykonania == 'w planach') {
+                return $this->produkty[$i];
+            }
+        }
+    }
+
+    public function nadajLideruZadania()
+    {
+        // sprawdzenie czy lider ma potrzebna ilość pracowników
+        // jeśli tak to sprawdzenie czy są wolni
+        // jeśli tak to nadanie lireru zadania pojectu nad ktorym nikt nie pracuje
+        // potem zmienia status wykonania produktu
+        for ($i = 0; $i < count($this->lidery); $i++) {
+            if (count($this->lidery[$i]->zwrocPodporzadkowanychPracownikow()) >= $this->produktNadKtorymNiePodjetaPraca()->wymaganaLiczbaProgramistow) {
+                if ($this->lidery[$i]->wolnePracowniki() >= $this->produktNadKtorymNiePodjetaPraca()->wymaganaLiczbaProgramistow) {
+                    $this->lidery[$i]->dostacProdukt($this->produktNadKtorymNiePodjetaPraca());
+
+                    $this->zmienicStanWykonaniaProduktu($this->produktNadKtorymNiePodjetaPraca());
+                }
+            }
+        }
+    }
+
+    public function zmienicStanWykonaniaProduktu($produkt)
+    {
+        // zmienia status produktu
+        $produkt->procesWykonania = 'realizuje się';
     }
 }

@@ -32,16 +32,36 @@ class LiderGrupy extends Osoba
         array_push($this->podporzadkowanePracownicy, $pracownik);
     }
 
-    public function dostacZadania()
+    public function wolnePracowniki()
     {
+        $iloscWolnych = 0;
+
+        for ($i = 0; $i < count($this->podporzadkowanePracownicy); $i++) {
+            if ($this->podporzadkowanePracownicy[$i]->czyZajety() == false) {
+                $iloscWolnych++;
+            }
+        }
+
+        return $iloscWolnych;
     }
 
-    public function podzielicMiedzyPracownikow()
+    public function dostacProdukt($produkt)
     {
+        $this->podzielicMiedzyPracownikow($produkt);       
     }
 
-    public function zmienicStanWykonaniaProjectu()
+    public function podzielicMiedzyPracownikow($produkt)
     {
+        for ($i = 0; $i < count($produkt->zadania); $i++) {
+            $this->nadacPracownikuZadanie($produkt->zadania[$i]);
+        }
+    }
+
+    public function nadacPracownikuZadanie($zadanie)
+    {
+        for ($i = 0; $i < count($this->podporzadkowanePracownicy); $i++) {
+            $this->podporzadkowanePracownicy[$i]->dostacZadanie($zadanie);
+        }
     }
 
     public function zwrocPodporzadkowanychPracownikow()

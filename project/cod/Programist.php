@@ -7,6 +7,7 @@ class Programist extends Osoba
     private $posada;
     private $czyZajety;
     private $lider;
+    private $zadanieKtoreWykonuje;
 
     public function __construct($imie, $nazwisko, $adres, $email, $oddzial, $posada)
     {
@@ -26,21 +27,20 @@ class Programist extends Osoba
                     grupa: $this->grupa <br>
                     posada: $this->posada <br>
                     lider: " . $this->lider->imie . ' ' . $this->lider->nazwisko . " <br>
-                    czy zajęty: " . ($this->czyZajety ? 'tak' : 'nie') . " <br>";
+                    czy zajęty: " . ($this->czyZajety ? 'tak' : 'nie') . " <br>
+                    zadanie: $this->zadanieKtoreWykonuje <br>";
     }
 
     public function dostacZadanie($zadanie)
     {
-        if ($this->czyZajety == false) {
-            $this->podjacPraceNadZadaniem($zadanie);
-        }
+        $this->podjacPraceNadZadaniem($zadanie);
     }
 
     public function podjacPraceNadZadaniem($zadanie)
     {
         $this->czyZajety = true;
 
-        echo "Imie: $this->imie, pracuje nad: $zadanie.";
+        $this->zadanieKtoreWykonuje = $zadanie;
     }
 
     public function dostacLidera($lider)
@@ -50,5 +50,10 @@ class Programist extends Osoba
         $this->lider = $lider;
 
         $this->grupa = $lider->grupa;
+    }
+
+    public function czyZajety()
+    {
+        return $this->czyZajety;
     }
 }

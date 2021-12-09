@@ -9,7 +9,7 @@ class Produkt
 
     public function __construct($nazwa, $wymaganaLiczbaProgramistow)
     {
-        $this->nazwa = $nazwa;        
+        $this->nazwa = $nazwa;
         $this->wymaganaLiczbaProgramistow = $wymaganaLiczbaProgramistow;
 
         $this->procesWykonania = 'w planach';
@@ -34,18 +34,18 @@ class Produkt
         $zadania = '';
 
         for ($i = 0; $i < count($this->zangazowaneProgramisci); $i++) {
-            $zangazowaneProgramisci = $zangazowaneProgramisci . $this->zangazowaneProgramisci[$i] . "<br>";
+            $zangazowaneProgramisci .= "<li>" . $this->zangazowaneProgramisci[$i] . "</li>";
         }
 
         for ($i = 0; $i < count($this->zadania); $i++) {
-            $zadania = $zadania . $this->zadania[$i] . "<br>";
+            $zadania .= "<li>" . $this->zadania[$i] . "</li>";
         }
 
         return "Produkt nazwa: $this->nazwa <br>
-                zaangazowane programisci:  <br>
+                zaangazowane programisci: <ul> $zangazowaneProgramisci </ul>
                 proces wykonania: $this->procesWykonania <br>
                 wymagana liczba programistow: $this->wymaganaLiczbaProgramistow <br>
-                zadania:  <br>";
+                zadania: <ul> $zadania </ul>";
     }
 
     public function dodajZadanie($zadanie)
