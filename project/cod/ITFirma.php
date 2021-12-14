@@ -7,6 +7,7 @@ class ITFirma
 {
     private $nazwa;
     private $adres;
+    // TODO usunac pracowniukow i uzywac tablic programisci i lidery
     private $pracowniki;
     private $programisci;
     private $lidery;
