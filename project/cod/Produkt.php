@@ -52,4 +52,9 @@ class Produkt
     {
         array_push($this->zadania, $zadanie);
     }
+
+    public function dodajZaangazowanychProgramistow($programist)
+    {
+        array_push($this->zangazowaneProgramisci, $programist);
+    }
 }

@@ -7,7 +7,6 @@ class ITFirma
 {
     private $nazwa;
     private $adres;
-    private $pracowniki;
     private $programisci;
     private $lidery;
     private $produkty;
@@ -17,7 +16,6 @@ class ITFirma
         $this->nazwa = $nazwa;
         $this->adres = $adres;
 
-        $this->pracowniki = [];
         $this->programisci = [];
         $this->lidery = [];
         $this->produkty = [];
@@ -35,15 +33,18 @@ class ITFirma
 
     public function __toString()
     {
+        $tablicaPracownikow = array_merge($this->lidery, $this->programisci);
+
         $pracowniki = '';
         $produkty = '';
 
-        for ($i = 0; $i < count($this->pracowniki); $i++) {
-            $pracowniki .= "<li>" . $this->pracowniki[$i] . "</li>";
+        foreach ($tablicaPracownikow as $pracownik) {
+            $pracowniki .= "<li>" . $pracownik . "</li>";
         }
 
-        for ($i = 0; $i < count($this->produkty); $i++) {
-            $produkty .= "<li>" . $this->produkty[$i] . "</li>";
+        foreach($this->produkty as $produkt)
+        {
+            $produkty .= "<li>" . $produkt . "</li>";
         }
 
         return "IT firma nazwa: $this->nazwa <br>
@@ -55,7 +56,6 @@ class ITFirma
     public function dodajLidera($imie, $nazwisko, $adres, $email, $grupa)
     {
         $lider = new LiderGrupy($imie, $nazwisko, $adres, $email, $grupa);
-        array_push($this->pracowniki, $lider);
         array_push($this->lidery, $lider);
     }
 
@@ -99,7 +99,6 @@ class ITFirma
     public function dodajPracownika($imie, $nazwisko, $adres, $email, $oddzial, $posada)
     {
         $programist = new Programist($imie, $nazwisko, $adres, $email, $oddzial, $posada);
-        array_push($this->pracowniki, $programist);
         array_push($this->programisci, $programist);
 
         $this->nadajLideraPracowniku($programist);
@@ -134,20 +133,32 @@ class ITFirma
         // jeśli tak to sprawdzenie czy są wolni
         // jeśli tak to nadanie lireru zadania pojectu nad ktorym nikt nie pracuje
         // potem zmienia status wykonania produktu
+        // na koncu dodaje zaangazowanych przcownikow
         for ($i = 0; $i < count($this->lidery); $i++) {
             if (count($this->lidery[$i]->zwrocPodporzadkowanychPracownikow()) >= $this->produktNadKtorymNiePodjetaPraca()->wymaganaLiczbaProgramistow) {
                 if ($this->lidery[$i]->wolnePracowniki() >= $this->produktNadKtorymNiePodjetaPraca()->wymaganaLiczbaProgramistow) {
                     $this->lidery[$i]->dostacProdukt($this->produktNadKtorymNiePodjetaPraca());
 
-                    $this->zmienicStanWykonaniaProduktu($this->produktNadKtorymNiePodjetaPraca());
+                    $this->dodacZaangazowanychPracownikowDoProduktu($this->produktNadKtorymNiePodjetaPraca(), $this->lidery[$i]->zwrocPodporzadkowanychPracownikow());
                 }
             }
         }
+
+
+
+        $this->zmienicStanWykonaniaProduktu($this->produktNadKtorymNiePodjetaPraca());
     }
 
     public function zmienicStanWykonaniaProduktu($produkt)
     {
         // zmienia status produktu
         $produkt->procesWykonania = 'realizuje się';
+    }
+
+    public function dodacZaangazowanychPracownikowDoProduktu($produkt, $pracowniki)
+    {
+        for ($i = 0; $i < count($pracowniki); $i++) {
+            $produkt->dodajZaangazowanychProgramistow($pracowniki[$i]);
+        }
     }
 }

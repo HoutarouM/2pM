@@ -5,12 +5,14 @@ require_once('Produkt.php');
 class LiderGrupy extends Osoba
 {
     private $podporzadkowanePracownicy;
+    private $programisciZaangazowaneWProekcie;
 
     public function __construct($imie, $nazwisko, $adres, $email, $grupa)
     {
         parent::__construct($imie, $nazwisko, $adres, $email, $grupa);
 
         $this->podporzadkowanePracownicy = [];
+        $this->programisciZaangazowaneWProekcie = [];
     }
 
     public function __toString()
@@ -18,7 +20,7 @@ class LiderGrupy extends Osoba
         $podporzadkowanePracowniki = '';
 
         for ($i = 0; $i < count($this->podporzadkowanePracownicy); $i++) {
-            $podporzadkowanePracowniki .= "<li>" . $this->podporzadkowanePracownicy[$i] . "</li>";
+            $podporzadkowanePracowniki .= "<li>" . $this->podporzadkowanePracownicy[$i]->imie . " ". $this->podporzadkowanePracownicy[$i]->nazwisko . "</li>";
         }
 
         return "Lider Grupy $this->grupa <br>
@@ -61,7 +63,14 @@ class LiderGrupy extends Osoba
     {
         for ($i = 0; $i < count($this->podporzadkowanePracownicy); $i++) {
             $this->podporzadkowanePracownicy[$i]->dostacZadanie($zadanie);
+
+            array_push($this->programisciZaangazowaneWProekcie, $this->podporzadkowanePracownicy[$i]);
         }
+    }
+
+    public function zwrocZaangazowanychProgramictow()
+    {
+        return $this->programisciZaangazowaneWProekcie;
     }
 
     public function zwrocPodporzadkowanychPracownikow()
