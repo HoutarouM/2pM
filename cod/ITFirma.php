@@ -7,6 +7,7 @@ class ITFirma
 {
     private $nazwa;
     private $adres;
+    private $pracowniki;
     private $programisci;
     private $lidery;
     private $produkty;
