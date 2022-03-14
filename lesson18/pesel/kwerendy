@@ -1,0 +1,4 @@
+kw1: SELECT `id`, `nazwa`, `opis`, `cena` FROM `podzespoly` WHERE `cena` < 1000 
+kw2: SELECT `nazwa`, `opis` FROM `podzespoly` WHERE `dostepnosc` = 1 AND `producenci_id` = 1
+kw3: SELECT podzespoly.`nazwa`, producenci.nazwa FROM `podzespoly` JOIN producenci ON producenci.id = podzespoly.producenci_id GROUP BY podzespoly.nazwa 
+kw4: UPDATE `producenci` SET `nazwa`="PATRIOT" WHERE `nazwa` = "Patriot"

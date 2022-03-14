@@ -47,21 +47,18 @@
     $query = "SELECT `koszyk` FROM `loginy` WHERE `login` = '$login'";
     $res = mysqli_query($con, $query);
     $data = mysqli_fetch_array($res);
-    
-    if($data){
-        $koszyk = $data[0];
+
+    while($data = mysqli_fetch_array($res)){
+        $koszyk = $koszyk . $data[0] . ' ';
     }
 
-    echo $koszyk;
-
         if(isset($_POST['koszyk']))
-        {
+        {            
             for($i = 0; $i < count($_POST['koszyk']); $i++)
-            {
-                $p = strpos($koszyk, $_POST['koszyk']);
+            {   
+                $k = $_POST['koszyk'];
 
-                if($p === false)
-                {
+                if (str_contains($k[$i], $koszyk)) {
                     $koszyk = $koszyk . $_POST['koszyk'][$i] . ' ';
                 }                
             }
